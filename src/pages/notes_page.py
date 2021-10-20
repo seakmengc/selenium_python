@@ -13,7 +13,6 @@ class NotesPage(BasePage):
 
     editor_ele = By.CSS_SELECTOR, 'div.react-codemirror2.editor.mousetrap'
 
-    favorite_btn = By.CSS_SELECTOR, 'nav:nth-child(1) > button:nth-child(2)'
     new_note_btn = By.CSS_SELECTOR, '[data-testid="sidebar-action-create-new-note"]'
 
     note_title_ele = By.CSS_SELECTOR, '[data-testid="note-title-0"]'

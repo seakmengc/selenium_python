@@ -1,38 +1,38 @@
-# from dataclasses import dataclass
-# from selenium import webdriver
+from dataclasses import dataclass
+from time import sleep
 
-# from selenium.webdriver.common.action_chains import ActionChains
-# from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
 
-# from src.pages.base_page import BasePage
-# from src.pages.notes_page import NotesPage
+from src.pages.base_page import BasePage
+from src.pages.notes_page import NotesPage
 
 
-# @dataclass
-# class FavoritePage(BasePage):
-#     page_btn = By.CSS_SELECTOR, 'section.app-sidebar-main > button:nth-child(1)'
-#     save_btn = By.CSS_SELECTOR, "[data-testid='topbar-action-sync-notes']"
+@dataclass
+class FavoritePage(BasePage):
+    page_btn = By.CSS_SELECTOR, '[data-testid="favorites"]'
 
-#     editor_ele = By.CSS_SELECTOR, 'div.react-codemirror2.editor.mousetrap'
+    favorite_btn = By.CSS_SELECTOR,  'main > section > nav:nth-child(1) > button:nth-child(2)'
 
-#     def __init__(self, driver: webdriver):
-#         super().__init__(driver)
+    favorite_title = 'Welcome to Takenote!'
 
-#         self.notes_page = NotesPage(driver)
+    notes_list_ele = By.CSS_SELECTOR, '[data-testid="note-list"]'
 
-#     def view_tab(self):
-#         self._view_tab()
+    def __init__(self, driver):
+        super().__init__(driver)
 
-#     def input(self, text: str):
-#         self.notes_page.view_tab()
+        self.notes_page = NotesPage(driver)
 
-#         self.find_element_by_tuple(self.editor_ele).click()
+    def get_notes_len(self) -> int:
+        return int(self.find_element_by_tuple(self.notes_list_ele).get_attribute('childElementCount'))
 
-#         self._clear_text()
+    def view_tab(self):
+        self.find_element_by_tuple(self.page_btn).click()
 
-#         ActionChains(self.driver)\
-#             .send_keys(text)\
-#             .perform()
+    def add_to_favorite(self):
+        self.notes_page.view_tab()
+        self.notes_page.get_editor().click()
 
-#     def save_changes(self):
-#         self.find_element_by_tuple(self.save_btn).click()
+        self.find_element_by_tuple(self.favorite_btn).click()
+
+        self.view_tab()
