@@ -1,19 +1,28 @@
-import unittest
-
-from src.pages.scratch_pad_page import ScratchPadPage
 from src.test.smoking.base_test import BaseTest
+from src.pages.notes_page import NotesPage
+import pytest
 
 
 def _go_to_tab(driver):
-    page = ScratchPadPage(driver)
+    page = NotesPage(driver)
     page.view_tab()
 
     return page
 
 
-class ScratchPadTest(BaseTest):
+class NotesTest(BaseTest):
     def test_go_to_view(self):
         _go_to_tab(self.driver)
+
+    def test_add_new_note(self):
+        page = _go_to_tab(self.driver)
+
+        page.add_new_note()
+
+        self.assertEqual(
+            'New note',
+            page.get_title().text.lstrip()
+        )
 
     def test_input(self):
         page = _go_to_tab(self.driver)
@@ -22,6 +31,7 @@ class ScratchPadTest(BaseTest):
         page.input(txt)
 
         self.assertEqual(txt, page.get_editor().text.lstrip())
+        self.assertEqual(txt, page.get_title().text.lstrip())
 
     def test_persist(self):
         page = _go_to_tab(self.driver)

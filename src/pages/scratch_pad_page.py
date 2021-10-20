@@ -3,7 +3,6 @@ from time import sleep
 
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 
 from src.pages.base_page import BasePage
 
@@ -22,23 +21,14 @@ class ScratchPadPage(BasePage):
         return self.find_element_by_tuple(self.editor_ele)
 
     def view_tab(self):
-        self.driver.get('https://takenote.dev/app')
-        self.driver.maximize_window()
-
-        self.find_element_by_tuple(self.page_btn).click()
+        self._view_tab()
 
     def input(self, text: str):
         self.view_tab()
 
         self.get_editor().click()
 
-        # clear text
-        ActionChains(self.driver)\
-            .key_down(Keys.COMMAND)\
-            .send_keys('a')\
-            .key_up(Keys.COMMAND) \
-            .send_keys(Keys.BACKSPACE) \
-            .perform()
+        self._clear_text()
 
         ActionChains(self.driver)\
             .send_keys(text)\
